@@ -1,12 +1,12 @@
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset
 from transformers import DefaultDataCollator, create_optimizer, TFAutoModelForQuestionAnswering, DistilBertConfig
 import tensorflow as tf
 from preprocessing import preprocess_function
 from load_data import get_squad_data, get_squad_data_small
 import numpy as np
 
-data_base_path = "../data/"
-# data_base_path = "/data/s3173267/BERT"
+# data_base_path = "../data/"
+data_base_path = "/data/s3173267/BERT/"
 
 data = get_squad_data_small(data_base_path + "squad.dat")
 
@@ -47,7 +47,7 @@ model = TFAutoModelForQuestionAnswering.from_config(config)
 model.compile(optimizer=optimizer)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(
-    filepath=data_base_path + "/checkpoints/cp-{epoch:04d}.ckpt",
+    filepath=data_base_path + "checkpoints/cp-{epoch:04d}.ckpt",
     verbose=1,
     save_weights_only=True,
     save_freq=1*batch_size)
