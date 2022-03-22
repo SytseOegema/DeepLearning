@@ -10,6 +10,6 @@ module load TensorFlow/2.5.0-fosscuda-2020b
 
 pip install -r code/requirements.txt --user
 
-mpirun python code/main.py
+mpirun python code/pre_train_model.py
 
 deactivate
