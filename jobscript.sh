@@ -6,9 +6,9 @@
 #SBATCH --mem=2gb
 
 module purge
-module load TensorFlow/2.3.1-fosscuda-2019b-Python-3.7.4
+module load TensorFlow/2.5.0-fosscuda-2020b
 
-pip install -r code/requirements.txt
+pip install -r code/requirements.txt --user
 
 python code/main.py
 

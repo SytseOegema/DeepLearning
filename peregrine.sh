@@ -5,9 +5,7 @@ git clone https://github.com/SytseOegema/DeepLearning.git
 
 python3 -m venv /data/$USER/.envs/bert_env
 
-source /data/$USER/.envs/bert_env/bin/activate
-
 pip install --upgrade pip
 pip install --upgrade wheel
 
-pip install -r code/requirements.txt
+pip install -r code/requirements.txt --user
