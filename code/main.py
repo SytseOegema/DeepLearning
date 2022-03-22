@@ -5,6 +5,8 @@ from preprocessing import preprocess_function
 from load_data import get_squad_data, get_squad_data_small
 import numpy as np
 
+print("started")
+
 # data_base_path = "../data/"
 data_base_path = "/data/s3173267/BERT/"
 
@@ -62,3 +64,4 @@ history = model.fit(
 print(history.history.keys())
 
 np.save(data_base_path + "history/hist.npy", history.history)
+print("finished")
