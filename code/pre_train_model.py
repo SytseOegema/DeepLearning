@@ -6,7 +6,7 @@ from helpers.load_data import get_squad_data, get_squad_data_small
 from helpers.store_results import store_dictionary, create_specific_folder
 
 batch_size = 16
-num_epochs = 10
+num_epochs = 100
 # data_base_path = "../data/"
 data_base_path = "/data/s3173267/BERT/"
 
