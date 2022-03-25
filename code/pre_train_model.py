@@ -6,14 +6,17 @@ from helpers.load_data import get_squad_data, get_squad_data_small
 from helpers.store_results import store_dictionary, create_specific_folder
 
 batch_size = 16
-num_epochs = 2
+num_epochs = 20
 # data_base_path = "../data/"
 data_base_path = "/data/s3173267/BERT/"
+
+pre_trained_path = ""
+# pre_trained_path = "../data/pretrained_model/"
 
 data = get_squad_data(data_base_path + "squad.dat")
 
 # add folder for this specific run
-data_base_path = create_specific_folder(data_base_path)
+# data_base_path = create_specific_folder(data_base_path)
 print("output folder: " + data_base_path + "\n\n\n")
 
 
@@ -47,9 +50,18 @@ optimizer, schedule = create_optimizer(
     num_train_steps=total_train_steps,
 )
 
-config = DistilBertConfig()
 
-model = TFAutoModelForQuestionAnswering.from_config(config)
+if pre_trained_path == "":
+    config = DistilBertConfig()
+
+    model = TFAutoModelForQuestionAnswering.from_config(config)
+else:
+    config = AutoConfig.from_pretrained(pre_trained_path + "config.json")
+
+    model = TFAutoModelForQuestionAnswering.from_pretrained(
+        pre_trained_path + "tf_model.h5",
+        config=config,
+    )
 
 model.compile(optimizer=optimizer)
 
