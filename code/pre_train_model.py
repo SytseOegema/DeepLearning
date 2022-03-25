@@ -6,7 +6,7 @@ from helpers.load_data import get_squad_data, get_squad_data_small
 from helpers.store_results import store_dictionary, create_specific_folder
 
 batch_size = 16
-num_epochs = 100
+num_epochs = 10
 # data_base_path = "../data/"
 data_base_path = "/data/s3173267/BERT/"
 
@@ -56,12 +56,14 @@ model.compile(optimizer=optimizer)
 cp_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=data_base_path + "checkpoints/cp-{epoch:04d}.ckpt",
     verbose=1,
-    save_weights_only=True)
+    save_weights_only=True,
+    save_freq=5*batch_size)
 
 history = model.fit(
     x=tf_train_set,
     validation_data=tf_validation_set,
     validation_freq=1,
+    callbacks=[cp_callback],
     epochs=num_epochs)
 
 store_dictionary(history.history, data_base_path)
