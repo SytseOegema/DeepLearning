@@ -11,11 +11,18 @@ batch_size = 16
 
 datasets = get_squad_data_small(data_base_path + "squad.dat")
 
-output = load_dictionary("../data/dictionary/hist.npy")
+print("\n\nSamples:")
+for i in range(5):
+    print("sample : " + str(i))
+    print("ID: " + datasets["test"][i]["id"])
+    print("Title: " + datasets["test"][i]["title"])
+    print("Context: " + datasets["test"][i]["context"])
+    print("Question: " + datasets["test"][i]["question"])
+    print("Answer: " + str(datasets["test"][i]["answers"]))
 
-print("datasets[test][0]")
-print(datasets["test"][0])
 print("\n\n")
+
+output = load_dictionary("../data/dictionary/hist.npy")
 
 test_features = datasets["test"].map(
     prepare_validation_features,
@@ -31,19 +38,11 @@ test_dataset = test_features.to_tf_dataset(
     collate_fn=data_collator,
 )
 
-print("test_features[0]")
-print(test_features[0])
-print("\n\n")
-
 model = TFAutoModelForQuestionAnswering.from_pretrained("distilbert-base-uncased")
 
 model.compile()
 
 raw_predictions = model.predict(x=test_dataset)
-
-print("raw_predictions[0]")
-print(raw_predictions[0])
-print("\n\n")
 
 final_predictions = postprocess_qa_predictions(
     datasets["test"],
@@ -51,13 +50,6 @@ final_predictions = postprocess_qa_predictions(
     raw_predictions["start_logits"],
     raw_predictions["end_logits"]
 )
-
-print("final_predictions[0]")
-print(final_predictions)
-print("\n\n")
-
-
-# print(final_predictions)
 
 metric = load_metric("squad_v2")
 
@@ -70,6 +62,12 @@ references = [
     {"id": ex["id"], "answers": ex["answers"]} for ex in datasets["test"]
 ]
 
+print("\n\nFormatted Predictions:")
+for i in range(5):
+    print("prediction: " + str(i))
+    print(formatted_predictions[i])
+
 results = metric.compute(predictions=formatted_predictions, references=references)
 
+print("\n\nResults:\n")
 print(results)
