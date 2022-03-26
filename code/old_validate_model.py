@@ -7,8 +7,8 @@ from helpers.store_results import store_dictionary, create_specific_folder
 
 batch_size = 16
 pre_trained_path = "../data/1648121878523403500/pretrained_model/"
-# data_base_path = "../data/"
-data_base_path = "/data/s3173267/BERT/"
+data_base_path = "../data/"
+# data_base_path = "/data/s3173267/BERT/"
 
 data = get_squad_data_small(data_base_path + "squad.dat")
 
@@ -46,5 +46,6 @@ history = model.evaluate(x=tf_test_set)
 print(history)
 
 predictions = model.predict(x=tf_test_set)
-
 print(predictions)
+
+store_dictionary(predictions, data_base_path)

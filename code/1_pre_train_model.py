@@ -7,8 +7,8 @@ from helpers.store_results import store_dictionary, create_specific_folder
 
 batch_size = 16
 num_epochs = 20
-# data_base_path = "../data/"
-data_base_path = "/data/s3173267/BERT/"
+data_base_path = "../data/"
+# data_base_path = "/data/s3173267/BERT/"
 
 pre_trained_path = ""
 # pre_trained_path = "../data/pretrained_model/"
