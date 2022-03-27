@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=01:00:00
+#SBATCH --time=10:00:00
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --mem=8gb
@@ -10,4 +10,4 @@ module load TensorFlow/2.5.0-fosscuda-2020b
 
 pip install -r code/requirements.txt --user
 
-python code/pre_train_model.py
+python code/1b_pre_train_model.py
