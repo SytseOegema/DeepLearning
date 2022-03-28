@@ -29,8 +29,6 @@ test_features = datasets["test"].map(
     remove_columns=datasets["test"].column_names,
 )
 
-print(test_features.shape)
-
 data_collator = DefaultDataCollator(return_tensors="tf")
 test_dataset = test_features.to_tf_dataset(
     columns=["attention_mask", "input_ids"],
@@ -38,7 +36,6 @@ test_dataset = test_features.to_tf_dataset(
     batch_size=batch_size,
     collate_fn=data_collator,
 )
-print(test_dataset.shape)
 
 config = AutoConfig.from_pretrained(pre_trained_path + "config.json")
 
@@ -52,7 +49,7 @@ model.compile()
 raw_predictions = model.predict(x=test_dataset)
 
 final_predictions = postprocess_qa_predictions(
-    datasets["test"],
+    test_dataset,
     test_features,
     raw_predictions["start_logits"],
     raw_predictions["end_logits"]
