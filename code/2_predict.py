@@ -2,17 +2,18 @@ from datasets import load_metric
 from transformers import TFAutoModelForQuestionAnswering, AutoConfig, DefaultDataCollator
 from helpers.validation import prepare_validation_features, postprocess_qa_predictions
 from helpers.load_data import get_squad_data, get_squad_data_small
-from helpers.load_results import load_dictionary
+from helpers.store_results import store_data
 import numpy as np
 
 pre_trained_path = "../data/1648121878523403500/pretrained_model/"
+storage_path = "../data/predictions/"
 data_base_path = "../data"
 batch_size = 16
 
 datasets = get_squad_data_small(data_base_path + "squad.dat")
 
 print("\n\nSamples:")
-for i in range(5):
+for i in range(10):
     print("sample : " + str(i))
     print("ID: " + datasets["test"][i]["id"])
     print("Title: " + datasets["test"][i]["title"])
@@ -21,8 +22,6 @@ for i in range(5):
     print("Answer: " + str(datasets["test"][i]["answers"]))
 
 print("\n\n")
-
-output = load_dictionary("../data/dictionary/hist.npy")
 
 test_features = datasets["test"].map(
     prepare_validation_features,
@@ -63,11 +62,15 @@ references = [
 ]
 
 print("\n\nFormatted Predictions:")
-for i in range(5):
+for i in range(10):
     print("prediction: " + str(i))
     print(formatted_predictions[i])
 
+store_data(formatted_predictions, storage_path + "formatted_predictions")
+
 results = metric.compute(predictions=formatted_predictions, references=references)
+
+store_data(formatted_predictions, storage_path + "results")
 
 print("\n\nResults:\n")
 print(results)
