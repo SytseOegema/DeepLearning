@@ -10,7 +10,7 @@ storage_path = "/data/s3173267/predictions/our_5/"
 data_base_path = "/data/s3173267/BERT/"
 batch_size = 16
 
-datasets = get_squad_data_small(data_base_path + "squad.dat")
+datasets = get_squad_data(data_base_path + "squad.dat")
 
 print("\n\nSamples:")
 for i in range(10):
@@ -29,6 +29,8 @@ test_features = datasets["test"].map(
     remove_columns=datasets["test"].column_names,
 )
 
+print(test_features.shape)
+
 data_collator = DefaultDataCollator(return_tensors="tf")
 test_dataset = test_features.to_tf_dataset(
     columns=["attention_mask", "input_ids"],
@@ -36,6 +38,7 @@ test_dataset = test_features.to_tf_dataset(
     batch_size=batch_size,
     collate_fn=data_collator,
 )
+print(test_dataset.shape)
 
 config = AutoConfig.from_pretrained(pre_trained_path + "config.json")
 
