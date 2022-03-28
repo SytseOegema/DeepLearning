@@ -49,7 +49,7 @@ model.compile()
 raw_predictions = model.predict(x=test_dataset)
 
 final_predictions = postprocess_qa_predictions(
-    test_dataset,
+    datasets["test"],
     test_features,
     raw_predictions["start_logits"],
     raw_predictions["end_logits"]
