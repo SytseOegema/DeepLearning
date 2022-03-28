@@ -37,7 +37,12 @@ test_dataset = test_features.to_tf_dataset(
     collate_fn=data_collator,
 )
 
-model = TFAutoModelForQuestionAnswering.from_pretrained("distilbert-base-uncased")
+config = AutoConfig.from_pretrained(pre_trained_path + "config.json")
+
+model = TFAutoModelForQuestionAnswering.from_pretrained(
+    pre_trained_path + "tf_model.h5",
+    config=config,
+)
 
 model.compile()
 
