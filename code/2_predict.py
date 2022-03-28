@@ -5,9 +5,9 @@ from helpers.load_data import get_squad_data, get_squad_data_small
 from helpers.store_results import store_data
 import numpy as np
 
-pre_trained_path = "../data/1648121878523403500/pretrained_model/"
-storage_path = "../data/predictions/"
-data_base_path = "../data"
+pre_trained_path = "/data/s3173267/BERT/pretrained_model/"
+storage_path = "/data/s3173267/predictions/our_5/"
+data_base_path = "/data/s3173267/BERT/"
 batch_size = 16
 
 datasets = get_squad_data_small(data_base_path + "squad.dat")
