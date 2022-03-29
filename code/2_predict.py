@@ -1,32 +1,34 @@
 from datasets import load_metric
-from transformers import TFAutoModelForQuestionAnswering, AutoConfig, DefaultDataCollator
+from transformers import TFAutoModelForQuestionAnswering, AutoConfig, DefaultDataCollator, DistilBertConfig
 from helpers.validation import prepare_validation_features, postprocess_qa_predictions
-from helpers.load_data import get_squad_data, get_squad_data_small
+from helpers.load_data import get_squad_data, get_test_squad_data
 from helpers.store_results import store_data
 import numpy as np
 
 pre_trained_path = "/data/s3173267/BERT/pretrained_model/"
 storage_path = "/data/s3173267/predictions/our_5/"
 data_base_path = "/data/s3173267/BERT/"
+# data_base_path = "../data/"
+# storage_path = "../data/s3173267/"
 batch_size = 16
 
-datasets = get_squad_data(data_base_path + "squad.dat")
+test_data = get_test_squad_data(data_base_path + "squad.dat")
 
 print("\n\nSamples:")
 for i in range(10):
     print("sample : " + str(i))
-    print("ID: " + datasets["test"][i]["id"])
-    print("Title: " + datasets["test"][i]["title"])
-    print("Context: " + datasets["test"][i]["context"])
-    print("Question: " + datasets["test"][i]["question"])
-    print("Answer: " + str(datasets["test"][i]["answers"]))
+    print("ID: " + test_data[i]["id"])
+    print("Title: " + test_data[i]["title"])
+    print("Context: " + test_data[i]["context"])
+    print("Question: " + test_data[i]["question"])
+    print("Answer: " + str(test_data[i]["answers"]))
 
 print("\n\n")
 
-test_features = datasets["test"].map(
+test_features = test_data.map(
     prepare_validation_features,
     batched=True,
-    remove_columns=datasets["test"].column_names,
+    remove_columns=test_data.column_names,
 )
 
 data_collator = DefaultDataCollator(return_tensors="tf")
@@ -46,10 +48,14 @@ model = TFAutoModelForQuestionAnswering.from_pretrained(
 
 model.compile()
 
+# config = DistilBertConfig()
+#
+# model = TFAutoModelForQuestionAnswering.from_config(config)
+
 raw_predictions = model.predict(x=test_dataset)
 
 final_predictions = postprocess_qa_predictions(
-    datasets["test"],
+    test_data,
     test_features,
     raw_predictions["start_logits"],
     raw_predictions["end_logits"]
@@ -63,7 +69,7 @@ formatted_predictions = [
 ]
 
 references = [
-    {"id": ex["id"], "answers": ex["answers"]} for ex in datasets["test"]
+    {"id": ex["id"], "answers": ex["answers"]} for ex in test_data
 ]
 
 print("\n\nFormatted Predictions:")

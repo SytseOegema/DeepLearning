@@ -1,5 +1,6 @@
 from datasets import load_dataset, DatasetDict
 from os.path import exists
+import numpy as np
 
 # get_squad_data creates a data set for training, validation and testing.
 #
@@ -28,3 +29,11 @@ def get_squad_data_small(path_to_file):
     squad["validation"] = squad["validation"].select([x for x in range(20)])
 
     return squad
+
+
+def get_test_squad_data(path_to_file):
+    squad = get_squad_data(path_to_file)
+    test_data = squad["test"]
+    indices = [*range(1005)] + [*range(1010,5284)]
+    print(indices)
+    return test_data.select(indices)
