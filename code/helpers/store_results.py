@@ -8,9 +8,8 @@ def store_dictionary(dictionary, data_base_path):
     print("data stored to: " + data_base_path + "dictionary/hist.npy")
 
 def create_specific_folder(base_dir):
-    final_base_dir = base_dir + str(time.time_ns()) + "/"
-    Path(final_base_dir).mkdir(parents=True, exist_ok=True)
-    return final_base_dir
+    Path(base_dir).mkdir(parents=True, exist_ok=True)
+    return base_dir
 
 
 def store_data(dictionary, path):

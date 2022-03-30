@@ -83,7 +83,7 @@ def predict(data_base_path, storage_path, pre_trained_path):
 
     results = metric.compute(predictions=formatted_predictions, references=references)
 
-    store_data(formatted_predictions, storage_path + "results")
+    store_data(results, storage_path + "results")
 
     print("\n\nResults:\n")
     print(results)
